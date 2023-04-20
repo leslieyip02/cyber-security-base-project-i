@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Secure Website</title>
+    </head>
+
+    <h1>
+        {% if username %}
+        Welcome {{username}}!
+        {% else %}
+        Welcome guest!
+        {% endif %}
+    </h1>
+
+    <body>
+        {% if not username %}
+        <a href='login/'>Log In</a>
+        <a href='signup/'>Sign Up</a>
+        {% else %}
+        <a href='logout/'>Log Out</a>
+        {% endif %}
+    </body>
+</html>
