@@ -6,7 +6,7 @@ def home(request):
     """
     Home view for the root of the application.
     """
-    if request.session['authenticated']:
+    if request.session.get('authenticated'):
         username = request.session['username']
         return redirect(f'./users/{username}/')
 
@@ -93,15 +93,15 @@ def user(request, username=""):
         account = request.POST.get('account')
         password = request.POST.get('password')
 
-        record = Record.objects.get(username=username,
-                                    account=account)
+        try:
+            record = Record.objects.get(username=username,
+                                        account=account)
 
-        # update record if it exists
-        if record:
+            # update record if it exists
             record.password = password
-            Record.save()
+            record.save()
 
-        else:
+        except:
             Record.objects.create(username=username,
                                   account=account,
                                   password=password)
