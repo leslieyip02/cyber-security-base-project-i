@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Secure Website</title>
+    </head>
+
+    <body>
+        <h1>Password Manager</h1>
+
+        <h2>Welcome {{username}}</h2>
+        <h2>Your Passwords:</h2>
+
+        <table>
+            <tr>
+                <th>Account</th>
+                <th>Password</th>
+            </tr>
+
+            {% if records %}
+
+            {% for record in records %}
+            <tr>
+                <td>{{record.account}}</td>
+                <td>{{record.password}}</td>
+            </tr>
+            {% endfor %}
+
+            {% else %}
+
+            <tr>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+
+            {% endif %}
+        </table>
+
+        <form method='POST'>
+            {% csrf_token %}
+
+            <input type='text' name='account' />
+            <input type='text' name='password' />
+            <button type='submit'>Add / Update</button>
+        </form>
+
+        <a href='logout/'>Log Out</a>
+    </body>
+</html>
