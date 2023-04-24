@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+
+* {
+    font-family: 'Roboto Slab', monospace;
+}
+
+body {
+    margin: 0%;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form > button {
+    margin-top: 1rem;
+}
+
+label {
+    margin: 1ch;
+}
+
+#passwords {
+    width: 50vw;
+}
+
+#passwords > table {
+    width: 100%;
+}
+
+td, th {
+    text-align: center;
+    padding: 8px;
+}
+
+div > table > * > tr:nth-child(odd) {
+    background-color: #eeeeee;
+}
+
+div > table > * > tr:first-child {
+    background-color: #cccccc;
+}

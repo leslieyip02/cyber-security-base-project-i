@@ -2,16 +2,22 @@
 <html>
     <head>
         <title>Secure Website</title>
+
+        {% load static %}
+        <link href="{% static 'pages/styles.css' %}" rel='stylesheet'>
+        <script src='https://kit.fontawesome.com/333fd59b62.js' crossorigin='anonymous'></script>
     </head>
 
-    <h1>Password Manager</h1>
-
     <body>
-        {% if not username %}
-        <a href='login/'>Log In</a>
-        <a href='signup/'>Sign Up</a>
-        {% else %}
-        <a href='logout/'>Log Out</a>
-        {% endif %}
+        <h1>Password Manager</h1>
+
+        <div>
+            <button>
+                <a href='login/'>Log In</a>
+            </button>
+            <button>
+                <a href='signup/'>Sign Up</a>
+            </button>
+        </div>
     </body>
 </html>

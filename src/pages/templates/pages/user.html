@@ -2,47 +2,71 @@
 <html>
     <head>
         <title>Secure Website</title>
+
+        {% load static %}
+        <link href="{% static 'pages/styles.css' %}" rel='stylesheet'>
+        <script src='https://kit.fontawesome.com/333fd59b62.js' crossorigin='anonymous'></script>
     </head>
 
     <body>
         <h1>Password Manager</h1>
 
-        <h2>Welcome {{username}}</h2>
-        <h2>Your Passwords:</h2>
+        <h2>Welcome {{username}}!</h2>
 
-        <table>
-            <tr>
-                <th>Account</th>
-                <th>Password</th>
-            </tr>
+        <div id="passwords">
+            <h2>Your Passwords:</h2>
 
-            {% if records %}
+            <table>
+                <tr>
+                    <th>Account</th>
+                    <th>Password</th>
+                </tr>
 
-            {% for record in records %}
-            <tr>
-                <td>{{record.account}}</td>
-                <td>{{record.password}}</td>
-            </tr>
-            {% endfor %}
+                {% if records %}
 
-            {% else %}
+                {% for record in records %}
+                <tr>
+                    <td>{{record.account}}</td>
+                    <td>{{record.password}}</td>
+                </tr>
+                {% endfor %}
 
-            <tr>
-                <td>-</td>
-                <td>-</td>
-            </tr>
+                {% else %}
 
-            {% endif %}
-        </table>
+                <tr>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+
+                {% endif %}
+            </table>
+        </div>
 
         <form method='POST'>
             {% csrf_token %}
-
-            <input type='text' name='account' />
-            <input type='text' name='password' />
+            <table>
+                <tr>
+                    <td>
+                        <label>Account:</label>
+                    </td>
+                    <td>
+                        <input type='text' name='account' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Password:</label>
+                    </td>
+                    <td>
+                        <input type='text' name='password' />
+                    </td>
+                </tr>
+            </table>
             <button type='submit'>Add / Update</button>
         </form>
 
-        <a href='../../logout/'>Log Out</a>
+        <button>
+            <a href='../../logout/'>Log Out</a>
+        </button>
     </body>
 </html>

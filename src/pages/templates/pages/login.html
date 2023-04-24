@@ -1,14 +1,41 @@
-<h2>Login</h2>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Secure Website</title>
 
+        {% load static %}
+        <link href="{% static 'pages/styles.css' %}" rel='stylesheet'>
+        <script src='https://kit.fontawesome.com/333fd59b62.js' crossorigin='anonymous'></script>
+    </head>
 
-<form method='POST'>
-    {% csrf_token %}
+    <body>
+        <h2>Login</h2>
 
-    <input type='text' name='username' />
-    <input type='text' name='password' />
-    <button type='submit'>Login</button>
-</form>
+        <form method='POST'>
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>
+                        <label>Username:</label>
+                    </td>
+                    <td>
+                        <input type='text' name='username' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Password:</label>
+                    </td>
+                    <td>
+                        <input type='text' name='password' />
+                    </td>
+                </tr>
+            </table>
+            <button type='submit'>Login</button>
+        </form>
 
-{% if error_message %}
-<p>{{error_message}}</p>
-{% endif %}
+        {% if error_message %}
+        <p>{{error_message}}</p>
+        {% endif %}
+    </body>
+</html>
