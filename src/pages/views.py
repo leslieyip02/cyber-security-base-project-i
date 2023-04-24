@@ -90,7 +90,6 @@ def user(request, username=""):
     """
     Returns a unique page for each authenticated user.
     """
-    error_message = ''
 
     con = connect('src/db.sqlite3')
     cur = con.cursor()
@@ -100,34 +99,48 @@ def user(request, username=""):
         records (username TEXT, account TEXT, password TEXT)
     """)
 
+    res = cur.execute("""
+                SELECT * FROM records WHERE username=?
+            """, (username,))
+
+    records = []
+    for record in res.fetchall():
+        _, account, password = record
+        records.append({'account': account, 'password': password})
+
+    # records = Record.objects.filter(username=username).values()
+
+    return render(request, 'pages/user.html',
+                  {'username': username, 'records': records, })
+
+
+def add(request, username=""):
     if request.method == 'POST':
         account = request.POST.get('account').strip()
         password = request.POST.get('password').strip()
 
-        try:
-            res = cur.execute("""
-                SELECT * FROM records
+        con = connect('src/db.sqlite3')
+        cur = con.cursor()
+        res = cur.execute("""
+            SELECT * FROM records
+            WHERE username=? AND account=?
+        """, (username, account))
+
+        if res.fetchone() is None:
+            query = f"""
+                INSERT INTO records (username, account, password)
+                VALUES ('{username}', '{account}', '{password}')
+            """
+            cur.executescript(query)
+
+        else:
+            cur.execute("""
+                UPDATE records
+                SET password=?
                 WHERE username=? AND account=?
-            """, (username, account))
+            """, (password, username, account))
 
-            if res.fetchone() is None:
-                query = f"""
-                    INSERT INTO records (username, account, password)
-                    VALUES ('{username}', '{account}', '{password}')
-                """
-                cur.executescript(query)
-
-            else:
-                cur.execute("""
-                    UPDATE records
-                    SET password=?
-                    WHERE username=? AND account=?
-                """, (password, username, account))
-
-            con.commit()
-
-        except Exception as e:
-            error_message = e
+        con.commit()
 
         # try:
         #     record = Record.objects.get(username=username,
@@ -142,23 +155,6 @@ def user(request, username=""):
         #                           account=account,
         #                           password=password)
 
-    # records = Record.objects.filter(username=username).values()
+        return redirect('../')
 
-    records = []
-
-    try:
-        res = cur.execute("""
-                SELECT * FROM records WHERE username=?
-            """, (username,))
-
-        for record in res.fetchall():
-            _, account, password = record
-            records.append({'account': account, 'password': password})
-    except:
-        error_message = 'Oops, something went wrong!'
-
-    return render(request, 'pages/user.html', {
-        'username': username,
-        'records': records,
-        'error_message': error_message
-    })
+    return render(request, 'pages/add.html')

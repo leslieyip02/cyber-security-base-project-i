@@ -42,35 +42,13 @@
             </table>
         </div>
 
-        <form method='POST'>
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td>
-                        <label>Account:</label>
-                    </td>
-                    <td>
-                        <input type='text' name='account' />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Password:</label>
-                    </td>
-                    <td>
-                        <input type='text' name='password' />
-                    </td>
-                </tr>
-            </table>
-            <button type='submit'>Add / Update</button>
-        </form>
-
-        {% if error_message %}
-        <p>{{error_message}}</p>
-        {% endif %}
-
-        <button>
-            <a href='../../logout/'>Log Out</a>
-        </button>
+        <div>
+            <button>
+                <a href='add/'>Add / Update</a>
+            </button>
+            <button>
+                <a href='../../logout/'>Log Out</a>
+            </button>
+        </div>
     </body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Secure Website</title>
+
+        {% load static %}
+        <link href="{% static 'pages/styles.css' %}" rel='stylesheet'>
+        <script src='https://kit.fontawesome.com/333fd59b62.js' crossorigin='anonymous'></script>
+    </head>
+
+    <body>
+        <h2>Add / Update Record</h2>
+
+        <form method='POST'>
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>
+                        <label>Account:</label>
+                    </td>
+                    <td>
+                        <input type='text' name='account' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Password:</label>
+                    </td>
+                    <td>
+                        <input type='text' name='password' />
+                    </td>
+                </tr>
+            </table>
+            <button type='submit'>Add / Update</button>
+        </form>
+    </body>
+</html>
