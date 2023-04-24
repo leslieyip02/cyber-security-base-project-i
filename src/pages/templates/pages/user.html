@@ -65,6 +65,10 @@
             <button type='submit'>Add / Update</button>
         </form>
 
+        {% if error_message %}
+        <p>{{error_message}}</p>
+        {% endif %}
+
         <button>
             <a href='../../logout/'>Log Out</a>
         </button>
