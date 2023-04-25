@@ -1,19 +1,29 @@
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from sqlite3 import connect
-from .models import Account, Record
+from .models import Account
+
+# FIX 2: Use django models
+# from .models import Record
+
+# FIX 4: Use password encryption
+# from django.contrib.auth.hashers import check_password
 
 
 def home(request):
     """
     Home view for the root of the application.
     """
-    if request.session.get('authenticated'):
-        username = request.session['username']
-        return redirect(f'./users/{username}/')
+    # FIX 1: Keep track of user
+    # if request.session.get('username'):
+    #     username = request.session['username']
+    #     return redirect(f'./users/{username}/')
 
     return render(request, 'pages/index.html')
 
 
+# FIX 5: enforce CSRF check
+@csrf_exempt
 def login(request):
     """
     Handles logins and authentication.
@@ -35,6 +45,10 @@ def login(request):
             if password == account.password:
                 authenticated = True
 
+            # FIX 4: Check encrypted password
+            # if check_password(password, account.password):
+            #     authenticated = True
+
         except:
             error_message = 'Account does not exists'
 
@@ -49,6 +63,8 @@ def login(request):
     return render(request, 'pages/login.html', {'error_message': error_message})
 
 
+# FIX 5: enforce CSRF check
+@csrf_exempt
 def signup(request):
     """
     Handles account creation.
@@ -67,7 +83,9 @@ def signup(request):
             Account.objects.create(username=username,
                                    password=password)
 
-            request.session['username'] = username
+            # FIX 1: Keep track of user
+            # request.session['username'] = username
+
             request.session['authenticated'] = True
             return redirect(f'../users/{username}/')
 
@@ -77,19 +95,24 @@ def signup(request):
     return render(request, 'pages/signup.html', {'error_message': error_message})
 
 
-def logout(request):
-    """
-    Handles logouts.
-    """
-    request.session['username'] = None
-    request.session['authenticated'] = False
-    return redirect('/')
+# FIX 3: Implement a proper logout
+# def logout(request):
+#     """
+#     Handles logouts.
+#     """
+#     # request.session['username'] = None
+#     request.session['authenticated'] = False
+#     return redirect('/')
 
 
 def user(request, username=""):
     """
     Returns a unique page for each authenticated user.
     """
+
+    # FIX 1: Deny access to other users
+    # if not request.session.get('username') == username:
+    #     return redirect('../../')
 
     con = connect('src/db.sqlite3')
     cur = con.cursor()
@@ -108,13 +131,24 @@ def user(request, username=""):
         _, account, password = record
         records.append({'account': account, 'password': password})
 
+    # FIX 2: Use django models
     # records = Record.objects.filter(username=username).values()
 
     return render(request, 'pages/user.html',
                   {'username': username, 'records': records, })
 
 
+# FIX 5: enforce CSRF check
+@csrf_exempt
 def add(request, username=""):
+    """
+    Handles adding and updating password records.
+    """
+
+    # FIX 1: Deny access to other users
+    # if not request.session.get('username') == username:
+    #     return redirect('../')
+
     if request.method == 'POST':
         account = request.POST.get('account').strip()
         password = request.POST.get('password').strip()
@@ -142,6 +176,7 @@ def add(request, username=""):
 
         con.commit()
 
+        # FIX 2: Use django models to prevent injection
         # try:
         #     record = Record.objects.get(username=username,
         #                                 account=account)
